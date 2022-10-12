@@ -224,6 +224,19 @@
 .sqd-task-rect.sqd-selected {
 	stroke-width: 2;
 }
+
+.sqd-task-rect-dropdown{
+	position: fixed;
+	left:0;
+	right: 0;
+	z-index: 9999;
+	margin-left: 20px;
+	margin-right:20px;
+}
+/* .sqd-task-rect-dropdown {
+	position:relative;
+	display:list-item;
+} */
 .sqd-task-text {
 	text-anchor: left;
 	dominant-baseline: central;

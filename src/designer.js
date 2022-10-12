@@ -1575,25 +1575,25 @@
 				ry: RECT_RADIUS
 			});
 			g.insertBefore(rect, text);
-			const text1 = Dom.svg('text', {
-				x: ICON_SIZE + PADDING_X * 2,
-				y: boxHeight / 2,
-				class: 'sqd-task-text'
-			});
-			text1.textContent = "Select List"
-			const text2 = "Run";
+			// const text1 = Dom.svg('text', {
+			// 	x: ICON_SIZE + PADDING_X * 2,
+			// 	y: boxHeight / 2,
+			// 	class: 'sqd-task-text'
+			// });
+			// text1.textContent = "Select List"
 			
 			const rect1 = Dom.svg('rect', {
-				x: 0.5,
+				x: 0,
 				y: boxHeight,
-				class: 'sqd-task-rect',
+				class: 'sqd-task-rect-dropdown',
 				width: boxWidth,
 				height: 2 * boxHeight,
 				rx: RECT_RADIUS,
 				ry: RECT_RADIUS
 			});
 			Dom.attrs(rect1, {
-				class: "sqd-hidden"
+				class: "sqd-hidden",
+				id: `d${Date.now()}`
 			});
 			const iconUrl = configuration.iconUrlProvider ? configuration.iconUrlProvider(step.componentType, step.type) : null;
 			// add click event for icon
@@ -1623,8 +1623,8 @@
 			 			ry: 4
 		  	 	});
 				 Dom.attrs(moreIcon, {
-					class: "more",
-					id: 'colorbox',
+					class: 'more',
+					id: Date.now(),
 					x: ICON_SIZE + 3 * PADDING_X + textWidth - 10,
 					y: PADDING_Y,
 					width: ICON_SIZE,
@@ -1679,6 +1679,7 @@
 				  });
 			Dom.attrs(icon3, {
 				class: "moreicon sqd-hidden",
+				id: `p${Date.now()}`,
 				x: ICON_SIZE + 3 * PADDING_X + textWidth + 22,
 				y: PADDING_Y - 22,
 				width: ICON_SIZE,
@@ -2632,24 +2633,26 @@
 			const clickedStep = !forceMoveMode && !this.context.isMoveModeEnabled ? this.getRootComponent().findByElement(target) : null;
 			//console.log(2707, target);
 			if (clickedStep) {
-				// Step 3
-				
-				// else{
-				// 	if(document.querySelectorAll(".moreicon")){
-				// 	var but = document.querySelectorAll(".moreicon");
-				// 	but.forEach((e) =>e.classList.add("sqd-hidden"));
-				// 	}
-				// }
-
+				console.log(2637,this)
 				this.context.behaviorController.start(position, SelectStepBehavior.create(clickedStep, this.context)); // chekc this bahavior
-				var but = document.querySelector(".more")
-				console.log(2637,  clickedStep)
-				 if (but && clickedStep.view.g.textContent !== "truefalseIf/Else"){
-				 	but.addEventListener("click", clickedStep.view.icon1.classList.remove("sqd-hidden"));
-				 	but.addEventListener("click", clickedStep.view.icon2.classList.remove("sqd-hidden"));
-				 	but.addEventListener("click", clickedStep.view.icon3.classList.remove("sqd-hidden"));
-				 	//console.log(2284, this.pressedStepComponent)
-				 }
+				//console.log( 2645, clickedStep.view.g.childNodes)
+				const moreid = clickedStep.view.g.childNodes[3].id.toString();
+				const but = document.getElementById(moreid)
+				but.onclick = function(){
+					but.addEventListener("click", clickedStep.view.icon1.classList.remove("sqd-hidden"));
+			 		but.addEventListener("click", clickedStep.view.icon2.classList.remove("sqd-hidden"));
+			 		but.addEventListener("click", clickedStep.view.icon3.classList.remove("sqd-hidden"));
+				}
+				const dropdown = clickedStep.view.g.childNodes[6].id;
+				const dropdownbut = document.getElementById(dropdown)
+				dropdownbut.onclick = function(){
+					
+					const dropdownwindow = clickedStep.view.g.childNodes[7].id;
+					console.log(2658, dropdownwindow)
+					const showdropdownwindow = document.getElementById(dropdownwindow)
+					showdropdownwindow.classList.toggle('sqd-hidden')
+				}
+				//console.log(2655, clickedStep.view.g.childNodes)
 				
 			} else {
 				//console.log(2706, this.context)
@@ -2657,7 +2660,8 @@
 				if(but){
 					but.forEach((e) =>e.classList.add("sqd-hidden"));
 				}
-				console.log(2709, but)
+				console.log(2663, this.view.canvas.childNodes[2].childNodes[0].childNodes[0].childNodes)
+				this.view.canvas.childNodes[2].childNodes[0].childNodes[0].childNodes.forEach((child) => {if(child.childNodes[7]) {child.childNodes[7].classList.add("sqd-hidden")}});
 				this.context.behaviorController.start(position, MoveViewPortBehavior.create(this.context));
 				//but.addEventListener("click", clickedStep.view.icon1.classList.add("sqd-hidden"));
 			}
